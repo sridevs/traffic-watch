@@ -5,7 +5,7 @@ import moment from "moment";
 jest.mock('axios');
 
 describe('fetchTrafficCamData', () => {
-    const BASE_URL = 'http://localhost:3000/traffic-cam';
+    const BASE_URL = 'http://localhost:3000/traffic-watch';
 
     test('fetches traffic cam data with correct URL and parameters', async () => {
         const date = '2023-05-16';

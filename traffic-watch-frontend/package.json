@@ -1,5 +1,5 @@
 {
-  "name": "road-watch-web-portal",
+  "name": "traffic-watch-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,7 +17,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set PORT=3001 && react-scripts start",
+    "start": "PORT=4000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject"

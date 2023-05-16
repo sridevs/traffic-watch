@@ -3,7 +3,7 @@ import { Button, DatePicker, notification, Spin, TimePicker } from 'antd';
 import { fetchTrafficCamData } from "../apis/fetchTrafficCams.js";
 
 const TrafficCam = () => {
-    const BASE_URL = 'http://localhost:3000/traffic-cam';
+    const BASE_URL = 'http://localhost:3000/traffic-watch';
 
     const [date, setDate] = useState(null);
     const [time, setTime] = useState(null);
