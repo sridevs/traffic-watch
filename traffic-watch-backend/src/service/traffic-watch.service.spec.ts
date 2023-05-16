@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TrafficWatchService } from "./traffic-watch.service";
+import { TrafficWatchService } from './traffic-watch.service';
 import { HttpModule, HttpService } from '@nestjs/axios';
-import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 describe('TrafficWatchService', () => {
   let trafficWatchService: TrafficWatchService;
@@ -13,9 +13,7 @@ describe('TrafficWatchService', () => {
       providers: [TrafficWatchService],
     }).compile();
 
-    trafficWatchService = moduleFixture.get<TrafficWatchService>(
-      TrafficWatchService,
-    );
+    trafficWatchService = moduleFixture.get<TrafficWatchService>(TrafficWatchService);
     httpService = moduleFixture.get<HttpService>(HttpService);
   });
 
@@ -25,9 +23,7 @@ describe('TrafficWatchService', () => {
 
       const expectedData = {
         // Mocked response data
-        items: [
-          // ... mock traffic items
-        ],
+        items: [{ cameras: [] }],
       };
 
       const response: AxiosResponse = {
@@ -38,12 +34,11 @@ describe('TrafficWatchService', () => {
         config: {} as InternalAxiosRequestConfig,
       };
 
-      jest
-        .spyOn(axios, 'get').mockResolvedValueOnce(response)
+      jest.spyOn(axios, 'get').mockResolvedValueOnce(response);
 
       const result = await trafficWatchService.getTrafficDetails(dateTime);
 
-      expect(result).toEqual(expectedData.items);
+      expect(result).toEqual([]);
     });
 
     it('should log an error if the request fails', async () => {

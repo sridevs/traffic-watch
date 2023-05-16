@@ -14,7 +14,7 @@ services:
   traffic-watch-frontend:
     container_name: traffic-watch-frontend
     environment:
-      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
     build:
       context: ./traffic-watch-frontend
       dockerfile: ./Dockerfile
