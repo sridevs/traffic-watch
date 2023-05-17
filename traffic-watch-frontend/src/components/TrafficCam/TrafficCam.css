@@ -9,6 +9,8 @@
     max-width: 500px;
     margin: 0 auto;
     padding: 16px;
+    overflow-x: auto;
+    overflow-y: scroll;
 }
 
 .formContainer {
@@ -44,12 +46,11 @@
 .imageContainer {
     margin-bottom: 16px;
     text-align: center;
-}
-
-.imageContainer {
     max-width: 100%;
     max-height: 150px;
     object-fit: contain;
+    overflow-x: auto;
+    overflow-y: scroll;
 }
 
 @media (max-width: 600px) {
@@ -67,6 +68,61 @@
         margin-left: 0;
         margin-right: 32px;
     }
+
+    /* Responsive changes for mobile */
+    .header {
+        font-size: 18px;
+    }
+
+    .ant-picker,
+    .ant-select,
+    .ant-picker-input {
+        width: 100%;
+        margin: 8px;
+    }
+
+    .formContainer {
+        flex-direction: column;
+    }
+
+    .buttonContainer {
+        margin-top: 16px;
+    }
+
+    .imageContainer {
+        margin-bottom: 8px;
+        max-width: 100%;
+        max-height: auto;
+        overflow-x: auto;
+        overflow-y: scroll;
+    }
+
+    .input-section {
+        margin-left: 0;
+    }
+
+    .display-section {
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap-reverse;
+        padding: 16px;
+        overflow-x: auto;
+        overflow-y: scroll;
+    }
+
+    .image-section {
+        margin-left: 0;
+    }
+
+    .ant-card {
+        width: 100%;
+        height: 200px;
+        font-size: 10px;
+    }
+
+    .footer {
+        display: none;
+    }
 }
 
 h1 {
@@ -83,6 +139,7 @@ h1 {
 .display-section {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap-reverse;
     justify-content: space-evenly;
     align-items: center;
     margin: 8px;
@@ -94,7 +151,7 @@ h1 {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    margin-left:64px;
+    margin-left: 64px;
 }
 
 .ant-card {
@@ -111,7 +168,7 @@ h1 {
     text-align: center;
     display: flex;
     justify-content: center;
-    position: absolute;
+    position: fixed;
     bottom: 0;
-    width: -webkit-fill-available;
+    width: 100%;
 }
