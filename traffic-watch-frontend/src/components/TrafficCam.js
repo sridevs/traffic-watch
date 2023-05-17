@@ -6,6 +6,7 @@ import {
   Select,
   Spin,
   TimePicker,
+  Image,
 } from "antd";
 import { fetchTrafficCamData } from "../apis/fetchTrafficCams.js";
 import "./TrafficCam.css";
@@ -47,7 +48,7 @@ const TrafficCam = () => {
 
   return (
     <div>
-      <h1>Traffic Images</h1>
+      <h1>Traffic Watch</h1>
       <div>
         <DatePicker
           data-testid="datePicker"
@@ -87,9 +88,14 @@ const TrafficCam = () => {
               trafficCams
                 .filter((camera) => camera.locationName === selectedLocation)
                 .map((camera) => (
-                  <div key={camera.camera_id}>
+                  <div key={camera.camera_id} className={"image-section"}>
                     <h3>Location: {camera.locationName}</h3>
-                    <img src={camera.image} alt="Traffic Cam" />
+                    <Image
+                      src={camera.image}
+                      alt="Traffic Cam"
+                      width={800}
+                      padding={10}
+                    />
                   </div>
                 ))}
           </div>

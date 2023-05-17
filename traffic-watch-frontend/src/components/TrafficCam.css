@@ -43,7 +43,7 @@
     text-align: center;
 }
 
-.imageContainer img {
+.imageContainer {
     max-width: 100%;
     max-height: 150px;
     object-fit: contain;
@@ -66,6 +66,10 @@
     }
 }
 
-h1, h3 {
+h1 {
+    margin: 8px;
+}
+
+.image-section {
     margin: 8px;
 }
