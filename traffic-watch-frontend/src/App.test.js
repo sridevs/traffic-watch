@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders traffic images', () => {
+test("renders traffic images", () => {
   render(<App />);
-  const linkElement = screen.getByText(/Traffic Images/i);
+  const linkElement = screen.getByText(/Traffic Watch/i);
   expect(linkElement).toBeInTheDocument();
 });

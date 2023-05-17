@@ -1,8 +1,8 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import TrafficCam from "./TrafficCam";
 
-jest.mock("../apis/fetchTrafficCams", () => ({
+jest.mock("../../apis/fetchTrafficCams", () => ({
   fetchTrafficCamData: jest.fn(),
 }));
 
@@ -10,7 +10,7 @@ describe("TrafficCam", () => {
   test("renders TrafficCam component", () => {
     render(<TrafficCam />);
 
-    expect(screen.getByText("Traffic Images")).toBeInTheDocument();
+    expect(screen.getByText("Traffic Watch")).toBeInTheDocument();
   });
 
   test("disables fetch button when date or time is not selected", () => {

@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import {
-  Button,
-  DatePicker,
-  notification,
-  Select,
-  Spin,
-  TimePicker,
-  Image,
-} from "antd";
-import { fetchTrafficCamData } from "../apis/fetchTrafficCams.js";
+import { Button, notification, Select, Spin } from "antd";
+import { fetchTrafficCamData } from "../../apis/fetchTrafficCams.js";
 import "./TrafficCam.css";
+import DateTimePicker from "../DateTimePicker/DateTimePicker";
+import TrafficImage from "../TrafficImage/TrafficImage";
 
 const TrafficCam = () => {
   const BASE_URL = "http://localhost:3000/traffic-watch";
@@ -50,14 +44,9 @@ const TrafficCam = () => {
     <div>
       <h1>Traffic Watch</h1>
       <div>
-        <DatePicker
-          data-testid="datePicker"
-          onChange={(date) => setDate(date)}
-        />
-        <TimePicker
-          data-testid="timePicker"
-          onChange={(time) => setTime(time)}
-          format="HH:mm:ss"
+        <DateTimePicker
+          onDateChange={(date) => setDate(date)}
+          onTimeChange={(time) => setTime(time)}
         />
         <Button
           type="primary"
@@ -88,15 +77,7 @@ const TrafficCam = () => {
               trafficCams
                 .filter((camera) => camera.locationName === selectedLocation)
                 .map((camera) => (
-                  <div key={camera.camera_id} className={"image-section"}>
-                    <h3>Location: {camera.locationName}</h3>
-                    <Image
-                      src={camera.image}
-                      alt="Traffic Cam"
-                      width={800}
-                      padding={10}
-                    />
-                  </div>
+                  <TrafficImage key={camera.camera_id} camera={camera} />
                 ))}
           </div>
         </div>
