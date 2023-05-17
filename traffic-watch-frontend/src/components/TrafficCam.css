@@ -1,0 +1,71 @@
+/*.container {*/
+/*    max-width: 500px;*/
+/*    margin: 0 auto;*/
+/*    padding: 16px;*/
+/*}*/
+
+/*.heading {*/
+/*    text-align: center;*/
+/*    margin-bottom: 16px;*/
+/*}*/
+
+.formContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.ant-picker,
+.ant-select,
+.ant-picker-input {
+    width: calc(50% - 400px);
+    margin: 8px;
+}
+
+.timePickerContainer {
+    margin-left: 16px; /* Add margin to create space */
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.ant-btn {
+    margin-left: 16px;
+}
+
+.imageContainer {
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.imageContainer img {
+    max-width: 100%;
+    max-height: 150px;
+    object-fit: contain;
+}
+
+@media (max-width: 600px) {
+    .datePickerContainer,
+    .timePickerContainer {
+        width: 100%;
+        margin-left: 0; /* Reset margin to remove space between date and time picker */
+    }
+
+    .buttonContainer {
+        justify-content: center;
+    }
+
+    .ant-btn {
+        margin-left: 0;
+        margin-right: 16px;
+    }
+}
+
+h1, h3 {
+    margin: 8px;
+}
