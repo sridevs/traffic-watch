@@ -3,7 +3,7 @@ import { DatePicker, TimePicker } from "antd";
 
 const DateTimePicker = ({ onDateChange, onTimeChange }) => {
   return (
-    <div>
+    <div className={"body"}>
       <DatePicker data-testid="datePicker" onChange={onDateChange} />
       <TimePicker
         data-testid="timePicker"

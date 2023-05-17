@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, notification, Select, Spin } from "antd";
+import { Button, notification, Select, Spin, Card } from "antd";
 import { fetchTrafficCamData } from "../../apis/fetchTrafficCams.js";
 import "./TrafficCam.css";
 import DateTimePicker from "../DateTimePicker/DateTimePicker";
@@ -42,8 +42,8 @@ const TrafficCam = () => {
 
   return (
     <div>
-      <h1>Traffic Watch</h1>
-      <div>
+      <header className="header">Traffic Watch</header>
+      <div className={"input-section"}>
         <DateTimePicker
           onDateChange={(date) => setDate(date)}
           onTimeChange={(time) => setTime(time)}
@@ -59,7 +59,7 @@ const TrafficCam = () => {
       {loading ? (
         <Spin data-testid="spinner" />
       ) : (
-        <div>
+        <div style={{ background: "cadetblue" }}>
           {locationDropdownEnabled ? (
             <Select
               value={selectedLocation}
@@ -77,11 +77,17 @@ const TrafficCam = () => {
               trafficCams
                 .filter((camera) => camera.locationName === selectedLocation)
                 .map((camera) => (
-                  <TrafficImage key={camera.camera_id} camera={camera} />
+                  <div className={"display-section"}>
+                    <TrafficImage key={camera.camera_id} camera={camera} />
+                    <Card title="Weather" bordered={false}>
+                      <h2>{camera.weatherForecast}</h2>
+                    </Card>
+                  </div>
                 ))}
           </div>
         </div>
       )}
+      <footer className="footer">Copyright@2023</footer>
     </div>
   );
 };

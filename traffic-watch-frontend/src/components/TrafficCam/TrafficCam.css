@@ -1,13 +1,15 @@
-/*.container {*/
-/*    max-width: 500px;*/
-/*    margin: 0 auto;*/
-/*    padding: 16px;*/
-/*}*/
+.header {
+    background-color: lightblue;
+    padding: 16px;
+    text-align: center;
+    font-size: 24px;
+}
 
-/*.heading {*/
-/*    text-align: center;*/
-/*    margin-bottom: 16px;*/
-/*}*/
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 16px;
+}
 
 .formContainer {
     display: flex;
@@ -21,21 +23,22 @@
 .ant-select,
 .ant-picker-input {
     width: calc(50% - 400px);
-    margin: 8px;
+    margin: 16px;
 }
 
 .timePickerContainer {
-    margin-left: 16px; /* Add margin to create space */
+    margin-left: 32px; /* Add margin to create space */
 }
 
 .buttonContainer {
     display: flex;
     justify-content: flex-end;
-    margin-top: 16px;
+    align-items: center;
+    margin-top: 32px;
 }
 
 .ant-btn {
-    margin-left: 16px;
+    margin: 16px;
 }
 
 .imageContainer {
@@ -62,14 +65,53 @@
 
     .ant-btn {
         margin-left: 0;
-        margin-right: 16px;
+        margin-right: 32px;
     }
 }
 
 h1 {
+    margin: 32px;
+}
+
+.input-section {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    background: azure;
+}
+
+.display-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
     margin: 8px;
+    padding: 40px;
 }
 
 .image-section {
-    margin: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-left:64px;
+}
+
+.ant-card {
+    width: 300px;
+    height: 230px;
+    background: pink;
+    font-size: 12px;
+    color: green;
+}
+
+.footer {
+    background-color: lightblue;
+    padding: 16px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    width: -webkit-fill-available;
 }

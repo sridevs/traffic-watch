@@ -18,6 +18,6 @@ describe("TrafficImage", () => {
     expect(locationElement).toBeInTheDocument();
     expect(imageElement).toBeInTheDocument();
     expect(imageElement).toHaveAttribute("src", "example.jpg");
-    expect(imageElement).toHaveAttribute("width", "800");
+    expect(imageElement).toHaveAttribute("width", "400");
   });
 });
