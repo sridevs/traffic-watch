@@ -2,6 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TrafficWatchService } from './traffic-watch.service';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { HttpStatus } from '@nestjs/common';
+import { NoDataFoundException } from '../ExceptionFilter/NoDataFoundException';
+import { TrafficWatchException } from '../ExceptionFilter/TrafficWatchException';
 
 describe('TrafficWatchService', () => {
   let trafficWatchService: TrafficWatchService;
@@ -41,18 +44,28 @@ describe('TrafficWatchService', () => {
       expect(result).toEqual([]);
     });
 
-    it('should log an error if the request fails', async () => {
+    it('should log and throw TrafficWatchException with 500 status code if the request fails unexpectedly', async () => {
       const dateTime = '2023-05-16T12:00:00';
 
       const error = new Error('Request failed');
 
       jest.spyOn(axios, 'get').mockRejectedValueOnce(error);
 
-      const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+      await expect(trafficWatchService.getTrafficDetails(dateTime)).rejects.toThrowError(
+        new TrafficWatchException('Failed to fetch traffic details', HttpStatus.INTERNAL_SERVER_ERROR),
+      );
+    });
 
-      await trafficWatchService.getTrafficDetails(dateTime);
+    it('should log and throw NoDataException with 404 status code if no data found', async () => {
+      const dateTime = '2023-05-16T12:00:00';
 
-      expect(consoleSpy).toHaveBeenCalledWith(error);
+      const error = new NoDataFoundException('No traffic data found', HttpStatus.NOT_FOUND);
+
+      jest.spyOn(axios, 'get').mockRejectedValueOnce(error);
+
+      await expect(trafficWatchService.getTrafficDetails(dateTime)).rejects.toThrowError(
+        new NoDataFoundException('No traffic data found', HttpStatus.NOT_FOUND),
+      );
     });
   });
 
@@ -102,18 +115,27 @@ describe('TrafficWatchService', () => {
       ]);
     });
 
-    it('should log an error if the request fails', async () => {
+    it('should log and throw 500 error if the request fails for unknown reason', async () => {
       const dateTime = '2023-05-16T12:00:00';
 
-      const error = new Error('Request failed');
+      const error = new Error('Failed');
 
       jest.spyOn(axios, 'get').mockRejectedValueOnce(error);
 
-      const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+      await expect(trafficWatchService.getWeatherForecasts(dateTime)).rejects.toThrowError(
+        new TrafficWatchException('Failed to fetch Weather details', HttpStatus.INTERNAL_SERVER_ERROR),
+      );
+    });
+    it('should log and throw error no data found execption if no weather data', async () => {
+      const dateTime = '2023-05-16T12:00:00';
 
-      await trafficWatchService.getWeatherForecasts(dateTime);
+      const error = new NoDataFoundException('No weather data found', HttpStatus.NOT_FOUND);
 
-      expect(consoleSpy).toHaveBeenCalledWith(error);
+      jest.spyOn(axios, 'get').mockRejectedValueOnce(error);
+
+      await expect(trafficWatchService.getWeatherForecasts(dateTime)).rejects.toThrowError(
+        new NoDataFoundException('No weather data found', HttpStatus.NOT_FOUND),
+      );
     });
   });
 });
