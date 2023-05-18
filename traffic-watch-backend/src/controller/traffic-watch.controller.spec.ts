@@ -21,7 +21,7 @@ describe('TrafficWatchController', () => {
       const mockData = [];
       jest.spyOn(trafficWatchService, 'getTrafficDetails').mockResolvedValue(mockData);
       jest.spyOn(trafficWatchService, 'getWeatherForecasts').mockResolvedValue(mockData);
-      expect(await trafficWatchController.getTrafficWeatherInfo('05/04/2023T')).toEqual(mockData);
+      expect(await trafficWatchController.getTrafficWeatherInfo('2023-05-04T00:00:00')).toEqual(mockData);
     });
   });
 });
