@@ -19,6 +19,9 @@ services:
       context: ./traffic-watch-frontend
       dockerfile: ./Dockerfile
     image: traffic-watch-frontend
+    cpus: "2"
+    mem_reservation: "2G"
+    mem_limit: "4G"
     ports:
       - "4000:4000"
     volumes:

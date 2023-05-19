@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { fetchTrafficCamData } from './fetchTrafficCams';
-import moment from "moment";
+import moment from 'moment';
 
 jest.mock('axios');
 
@@ -12,13 +12,13 @@ describe('fetchTrafficCamData', () => {
         const time = '10:00:00';
         const expectedURL = `${BASE_URL}?dateTime=${date}T${time}`;
 
-        const mockResponse = { data: 'mocked data' };
-        axios.get.mockResolvedValue(mockResponse);
+        const mockResponse: AxiosResponse<any> = { data: 'mocked data' } as AxiosResponse;
+        (axios.get as jest.Mock).mockResolvedValue(mockResponse);
 
         const response = await fetchTrafficCamData(BASE_URL, moment(date), moment(`${date}T${time}`));
 
         expect(axios.get).toHaveBeenCalledWith(expectedURL);
-        expect(response).toEqual(mockResponse);
+        expect(response).toEqual(mockResponse.data);
     });
 
     test('throws an error if the API call fails', async () => {
@@ -27,7 +27,7 @@ describe('fetchTrafficCamData', () => {
         const expectedURL = `${BASE_URL}?dateTime=${date}T${time}`;
 
         const mockError = new Error('API error');
-        axios.get.mockRejectedValue(mockError);
+        (axios.get as jest.Mock).mockRejectedValue(mockError);
 
         await expect(fetchTrafficCamData(BASE_URL, moment(date), moment(`${date}T${time}`))).rejects.toThrowError(
             'API error'

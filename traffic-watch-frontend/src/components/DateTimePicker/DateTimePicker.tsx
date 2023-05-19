@@ -1,7 +1,7 @@
 import React from "react";
 import { DatePicker, TimePicker } from "antd";
 
-const DateTimePicker = ({ onDateChange, onTimeChange }) => {
+const DateTimePicker = ({ onDateChange, onTimeChange }: any) => {
   return (
     <div className={"body"}>
       <DatePicker data-testid="datePicker" onChange={onDateChange} />

@@ -92,7 +92,7 @@
     .imageContainer {
         margin-bottom: 8px;
         max-width: 100%;
-        max-height: auto;
+        max-height: inherit;
         overflow-x: auto;
         overflow-y: scroll;
     }
