@@ -65,11 +65,9 @@
     }
 
     .ant-btn {
-        margin-left: 0;
-        margin-right: 32px;
+        width: inherit;
     }
 
-    /* Responsive changes for mobile */
     .header {
         font-size: 18px;
     }

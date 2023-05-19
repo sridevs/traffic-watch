@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { Button, notification, Select, Spin, Card } from "antd";
-import {fetchTrafficCamData, TrafficWeather} from "../../apis/fetchTrafficCams";
+import { Button, notification, Select, Card, Skeleton } from "antd";
+import {
+  fetchTrafficCamData,
+  TrafficWeather,
+} from "../../apis/fetchTrafficCams";
 import "./TrafficCam.css";
 import DateTimePicker from "../DateTimePicker/DateTimePicker";
 import TrafficImage from "../TrafficImage/TrafficImage";
@@ -42,54 +45,61 @@ const TrafficCam: React.FC = () => {
   };
 
   return (
-      <div>
-        <header className="header">Traffic Watch</header>
-        <div className={"input-section"}>
-          <DateTimePicker
-              onDateChange={(date: React.SetStateAction<Moment | null>) => setDate(date)}
-              onTimeChange={(time: React.SetStateAction<Moment | null>) => setTime(time)}
-          />
-          <Button
-              type="primary"
-              onClick={getTrafficCams}
-              disabled={!date || !time}
-          >
-            Fetch traffic details
-          </Button>
-        </div>
-        {loading ? (
-            <Spin data-testid="spinner" />
-        ) : (
-            <div style={{ background: "cadetblue" }}>
-              {locationDropdownEnabled ? (
-                  <Select
-                      value={selectedLocation}
-                      onChange={handleLocationSelect}
-                      style={{ width: 200, marginBottom: 16 }}
-                      options={trafficCams.map(({ locationName }) => ({
-                        value: locationName,
-                        label: locationName,
-                      }))}
-                      data-testid={"locationDropdown"}
-                  ></Select>
-              ) : null}
-              <div>
-                {selectedLocation &&
-                    trafficCams
-                        .filter((camera) => camera.locationName === selectedLocation)
-                        .map((camera) => (
-                            <div className={"display-section"} key={camera.camera_id}>
-                              <TrafficImage camera={camera} />
-                              <Card title="Weather" bordered={false}>
-                                <h2>{camera.weatherForecast}</h2>
-                              </Card>
-                            </div>
-                        ))}
-              </div>
-            </div>
-        )}
-        <footer className="footer">Copyright@2023</footer>
+    <div>
+      <header className="header">Traffic Watch</header>
+      <div className={"input-section"}>
+        <DateTimePicker
+          onDateChange={(date: React.SetStateAction<Moment | null>) =>
+            setDate(date)
+          }
+          onTimeChange={(time: React.SetStateAction<Moment | null>) =>
+            setTime(time)
+          }
+        />
+        <Button
+          type="primary"
+          onClick={getTrafficCams}
+          disabled={!date || !time}
+        >
+          Fetch traffic details
+        </Button>
       </div>
+      {loading ? (
+        <Skeleton
+          active
+          style={{ margin: "16px", width: "-webkit-fill-available" }}
+        />
+      ) : (
+        <div style={{ background: "cadetblue" }}>
+          {locationDropdownEnabled ? (
+            <Select
+              value={selectedLocation}
+              onChange={handleLocationSelect}
+              style={{ width: 200, marginBottom: 16 }}
+              options={trafficCams.map(({ locationName }) => ({
+                value: locationName,
+                label: locationName,
+              }))}
+              data-testid={"locationDropdown"}
+            ></Select>
+          ) : null}
+          <div>
+            {selectedLocation &&
+              trafficCams
+                .filter((camera) => camera.locationName === selectedLocation)
+                .map((camera) => (
+                  <div className={"display-section"} key={camera.camera_id}>
+                    <TrafficImage camera={camera} />
+                    <Card title="Weather" bordered={false}>
+                      <h2>{camera.weatherForecast}</h2>
+                    </Card>
+                  </div>
+                ))}
+          </div>
+        </div>
+      )}
+      <footer className="footer">Copyright@2023</footer>
+    </div>
   );
 };
 
