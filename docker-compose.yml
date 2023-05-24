@@ -13,8 +13,6 @@ services:
     command: npm run start:dev
   traffic-watch-frontend:
     container_name: traffic-watch-frontend
-    environment:
-      - WATCHPACK_POLLING=true
     build:
       context: ./traffic-watch-frontend
       dockerfile: ./Dockerfile
