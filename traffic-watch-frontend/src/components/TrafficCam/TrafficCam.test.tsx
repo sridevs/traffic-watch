@@ -1,9 +1,10 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import TrafficCam from "./TrafficCam";
+import { vi } from "vitest";
 
-jest.mock("../../apis/fetchTrafficCams", () => ({
-  fetchTrafficCamData: jest.fn(),
+vi.mock("../../apis/fetchTrafficCams", () => ({
+  fetchTrafficCamData: vi.fn(),
 }));
 
 describe("TrafficCam", () => {
