@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, notification, Select, Card, Skeleton } from "antd";
+import { Button, Card, notification, Select, Skeleton } from "antd";
 import {
   fetchTrafficCamData,
   TrafficWeather,
@@ -8,6 +8,11 @@ import "./TrafficCam.css";
 import DateTimePicker from "../DateTimePicker/DateTimePicker";
 import TrafficImage from "../TrafficImage/TrafficImage";
 import { Moment } from "moment";
+
+const toOptions = ({ locationName }: { locationName: string }) => ({
+  value: locationName,
+  label: locationName,
+});
 
 const TrafficCam: React.FC = () => {
   const BASE_URL = "http://localhost:3000/traffic-watch";
@@ -76,10 +81,7 @@ const TrafficCam: React.FC = () => {
               value={selectedLocation}
               onChange={handleLocationSelect}
               style={{ width: 200, marginBottom: 16 }}
-              options={trafficCams.map(({ locationName }) => ({
-                value: locationName,
-                label: locationName,
-              }))}
+              options={trafficCams.map(toOptions)}
               data-testid={"locationDropdown"}
             ></Select>
           ) : null}
