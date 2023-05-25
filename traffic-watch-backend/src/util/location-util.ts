@@ -8,17 +8,14 @@ export function combineTrafficAndWeather(
   const trafficWeatherWithProximities: TrafficWeatherWithProximity[] = [];
 
   for (const camera of trafficCameras) {
-    let closestForecast: WeatherForecast | undefined;
-    let shortestDistance = Infinity;
-
     const { image_metadata, image, camera_id, location, timestamp } = camera;
-    for (const forecast of weatherForecasts) {
-      const distance = calculateDistance(location, forecast.coordinate);
-      if (distance < shortestDistance) {
-        shortestDistance = distance;
-        closestForecast = forecast;
-      }
-    }
+    const { forecast: closestForecast, distance: shortestDistance } = weatherForecasts.reduce(
+      (closest, forecast) => {
+        const distance = calculateDistance(location, forecast.coordinate);
+        return distance < closest.distance ? { forecast, distance } : closest;
+      },
+      { forecast: undefined, distance: Infinity },
+    );
 
     if (closestForecast) {
       // Check if a TrafficWeather object with the same location already exists
