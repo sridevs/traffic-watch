@@ -1,7 +1,7 @@
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
 import { TrafficWatchService } from '../service/traffic-watch.service';
-import { combineTrafficAndWeather } from '../util/location-util';
 import { TrafficWeather } from '../interface/traffic';
+import { TrafficWeathersCollection } from '../model/TrafficWeathersCollection/TrafficWeathersCollection';
 
 @Controller('traffic-watch')
 export class TrafficWatchController {
@@ -16,6 +16,7 @@ export class TrafficWatchController {
     }
     const weatherForecasts = await this.trafficWatchService.getWeatherForecasts(dateTime);
     const trafficCameras = await this.trafficWatchService.getTrafficDetails(dateTime);
-    return combineTrafficAndWeather(trafficCameras, weatherForecasts);
+    const trafficWeathersCollection = new TrafficWeathersCollection();
+    return trafficWeathersCollection.combineTrafficAndWeather(trafficCameras, weatherForecasts);
   }
 }

@@ -4,6 +4,9 @@ import { TrafficWatchService } from '../src/service/traffic-watch.service';
 import { INestApplication } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import * as request from 'supertest';
+import { WeatherForecast } from '../src/model/WeatherForecast/WeatherForecast';
+import { TrafficCamera } from '../src/model/TrafficCamera';
+import { TrafficWeather } from '../src/model/TrafficWeather';
 
 jest.mock('axios');
 describe('TrafficWatchController (e2e)', () => {
@@ -29,48 +32,36 @@ describe('TrafficWatchController (e2e)', () => {
     it('should return combined traffic and weather information', async () => {
       const dateTime = '2023-05-18T12:00:00';
       const weatherForecasts = [
-        {
-          location: 'Singapore Central',
-          coordinate: { latitude: 1.3521, longitude: 103.8198 },
-          forecast: 'Partly cloudy',
-        },
-        {
-          location: 'Singapore East',
-          coordinate: { latitude: 1.3456, longitude: 103.983 },
-          forecast: 'Sunny',
-        },
-        {
-          location: 'Singapore West',
-          coordinate: { latitude: 1.3769, longitude: 103.7764 },
-          forecast: 'Rainy',
-        },
+        new WeatherForecast('Singapore Central', { latitude: 1.3521, longitude: 103.8198 }, 'Partly cloudy'),
+        new WeatherForecast('Singapore East', { latitude: 1.3456, longitude: 103.983 }, 'Sunny'),
+        new WeatherForecast('Singapore West', { latitude: 1.3769, longitude: 103.7764 }, 'Rainy'),
       ];
       const trafficCameras = [
-        {
-          camera_id: 'cam1',
-          image: 'image1.jpg',
-          image_metadata: { width: 1280, height: 720, md5: '12345' },
-          location: { latitude: 1.3521, longitude: 103.8198 },
-          timestamp: '2023-05-17T10:30:00Z',
-        },
-        {
-          camera_id: 'cam2',
-          image: 'image2.jpg',
-          image_metadata: { width: 1920, height: 1080, md5: '67890' },
-          location: { latitude: 1.2903, longitude: 103.8515 },
-          timestamp: '2023-05-17T10:35:00Z',
-        },
+        new TrafficCamera(
+          'cam1',
+          'image1.jpg',
+          { width: 1280, height: 720, md5: '12345' },
+          { latitude: 1.3521, longitude: 103.8198 },
+          '2023-05-17T10:30:00Z',
+        ),
+        new TrafficCamera(
+          'cam2',
+          'image2.jpg',
+          { width: 1920, height: 1080, md5: '67890' },
+          { latitude: 1.2903, longitude: 103.8515 },
+          '2023-05-17T10:35:00Z',
+        ),
       ];
-      const combinedData = [
-        {
-          camera_id: 'cam1',
-          image: 'image1.jpg',
-          image_metadata: { width: 1280, height: 720, md5: '12345' },
-          location: { latitude: 1.3521, longitude: 103.8198 },
-          locationName: 'Singapore Central',
-          weatherForecast: 'Partly cloudy',
-          timestamp: '2023-05-17T10:30:00Z',
-        },
+      const trafficWeathers = [
+        new TrafficWeather(
+          'cam1',
+          'image1.jpg',
+          { width: 1280, height: 720, md5: '12345' },
+          { latitude: 1.3521, longitude: 103.8198 },
+          'Singapore Central',
+          'Partly cloudy',
+          '2023-05-17T10:30:00Z',
+        ),
       ];
 
       jest.spyOn(trafficWatchService, 'getWeatherForecasts').mockResolvedValue(weatherForecasts);
@@ -81,7 +72,7 @@ describe('TrafficWatchController (e2e)', () => {
 
       expect(trafficWatchService.getWeatherForecasts).toHaveBeenCalledWith(dateTime);
       expect(trafficWatchService.getTrafficDetails).toHaveBeenCalledWith(dateTime);
-      expect(response.body).toEqual(combinedData);
+      expect(response.body).toEqual(trafficWeathers);
     });
 
     it('should return 400 Bad Request for invalid dateTime format', async () => {

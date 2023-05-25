@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TrafficWatchService } from './traffic-watch.service';
-import { HttpModule, HttpService } from '@nestjs/axios';
+import { HttpModule } from '@nestjs/axios';
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { HttpStatus } from '@nestjs/common';
 import { NoDataFoundException } from '../ExceptionFilter/NoDataFoundException';
 import { TrafficWatchException } from '../ExceptionFilter/TrafficWatchException';
+import { TrafficCamera } from '../model/TrafficCamera';
 
 describe('TrafficWatchService', () => {
   let trafficWatchService: TrafficWatchService;
-  let httpService: HttpService;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -17,16 +17,22 @@ describe('TrafficWatchService', () => {
     }).compile();
 
     trafficWatchService = moduleFixture.get<TrafficWatchService>(TrafficWatchService);
-    httpService = moduleFixture.get<HttpService>(HttpService);
   });
 
   describe('getTrafficDetails', () => {
     it('should return traffic details', async () => {
       const dateTime = '2023-05-16T12:00:00';
 
+      const trafficCamera = new TrafficCamera(
+        'cam1',
+        'image1.jpg',
+        { width: 1280, height: 720, md5: '12345' },
+        { latitude: 1.3512, longitude: 103.8111 },
+        '2023-05-17T10:30:00Z',
+      );
       const expectedData = {
         // Mocked response data
-        items: [{ cameras: [] }],
+        items: [{ cameras: [trafficCamera] }],
       };
 
       const response: AxiosResponse = {
@@ -41,10 +47,10 @@ describe('TrafficWatchService', () => {
 
       const result = await trafficWatchService.getTrafficDetails(dateTime);
 
-      expect(result).toEqual([]);
+      expect(result).toEqual([trafficCamera]);
     });
 
-    it('should log and throw TrafficWatchException with 500 status code if the request fails unexpectedly', async () => {
+    it('should throw TrafficWatchException with 500 status code if the request fails unexpectedly', async () => {
       const dateTime = '2023-05-16T12:00:00';
 
       const error = new Error('Request failed');
@@ -56,7 +62,7 @@ describe('TrafficWatchService', () => {
       );
     });
 
-    it('should log and throw NoDataException with 404 status code if no data found', async () => {
+    it('should throw NoDataException with 404 status code if no data found', async () => {
       const dateTime = '2023-05-16T12:00:00';
 
       const error = new NoDataFoundException('No traffic data found', HttpStatus.NOT_FOUND);
@@ -66,6 +72,42 @@ describe('TrafficWatchService', () => {
       await expect(trafficWatchService.getTrafficDetails(dateTime)).rejects.toThrowError(
         new NoDataFoundException('No traffic data found', HttpStatus.NOT_FOUND),
       );
+    });
+    it('should throw NoDataException with 404 status code if no data found', async () => {
+      const dateTime = '2023-05-16T12:00:00';
+
+      const error = new NoDataFoundException('No traffic data found', HttpStatus.NOT_FOUND);
+
+      jest.spyOn(axios, 'get').mockResolvedValueOnce({});
+
+      await expect(trafficWatchService.getTrafficDetails(dateTime)).rejects.toThrowError(error);
+    });
+    it('should throw NoDataException with 404 status code if no items in data', async () => {
+      const dateTime = '2023-05-16T12:00:00';
+
+      const error = new NoDataFoundException('No traffic data found', HttpStatus.NOT_FOUND);
+
+      jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: {} });
+
+      await expect(trafficWatchService.getTrafficDetails(dateTime)).rejects.toThrowError(error);
+    });
+    it('should throw NoDataException with 404 status code if no items in data', async () => {
+      const dateTime = '2023-05-16T12:00:00';
+
+      const error = new NoDataFoundException('No traffic data found', HttpStatus.NOT_FOUND);
+
+      jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: {} });
+
+      await expect(trafficWatchService.getTrafficDetails(dateTime)).rejects.toThrowError(error);
+    });
+    it('should throw NoDataException with 404 status code if items is empty', async () => {
+      const dateTime = '2023-05-16T12:00:00';
+
+      const error = new NoDataFoundException('No traffic data found', HttpStatus.NOT_FOUND);
+
+      jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: { items: [] } });
+
+      await expect(trafficWatchService.getTrafficDetails(dateTime)).rejects.toThrowError(error);
     });
   });
 
@@ -115,7 +157,7 @@ describe('TrafficWatchService', () => {
       ]);
     });
 
-    it('should log and throw 500 error if the request fails for unknown reason', async () => {
+    it('should throw 500 error if the request fails for unknown reason', async () => {
       const dateTime = '2023-05-16T12:00:00';
 
       const error = new Error('Failed');
@@ -126,7 +168,7 @@ describe('TrafficWatchService', () => {
         new TrafficWatchException('Failed to fetch Weather details', HttpStatus.INTERNAL_SERVER_ERROR),
       );
     });
-    it('should log and throw error no data found execption if no weather data', async () => {
+    it('should throw error no data found execption if no weather data', async () => {
       const dateTime = '2023-05-16T12:00:00';
 
       const error = new NoDataFoundException('No weather data found', HttpStatus.NOT_FOUND);
@@ -136,6 +178,42 @@ describe('TrafficWatchService', () => {
       await expect(trafficWatchService.getWeatherForecasts(dateTime)).rejects.toThrowError(
         new NoDataFoundException('No weather data found', HttpStatus.NOT_FOUND),
       );
+    });
+    it('should throw error no data found execption if no data in response', async () => {
+      const dateTime = '2023-05-16T12:00:00';
+
+      const error = new NoDataFoundException('No Weather data found', HttpStatus.NOT_FOUND);
+
+      jest.spyOn(axios, 'get').mockResolvedValueOnce({});
+
+      await expect(trafficWatchService.getWeatherForecasts(dateTime)).rejects.toThrowError(error);
+    });
+    it('should throw error no data found execption if no area_metadata in response', async () => {
+      const dateTime = '2023-05-16T12:00:00';
+
+      const error = new NoDataFoundException('No Weather data found', HttpStatus.NOT_FOUND);
+
+      jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: {} });
+
+      await expect(trafficWatchService.getWeatherForecasts(dateTime)).rejects.toThrowError(error);
+    });
+    it('should throw error no data found execption if no items in response', async () => {
+      const dateTime = '2023-05-16T12:00:00';
+
+      const error = new NoDataFoundException('No Weather data found', HttpStatus.NOT_FOUND);
+
+      jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: { area_metadata: {} } });
+
+      await expect(trafficWatchService.getWeatherForecasts(dateTime)).rejects.toThrowError(error);
+    });
+    it('should throw error no data found execption if items is empty in response', async () => {
+      const dateTime = '2023-05-16T12:00:00';
+
+      const error = new NoDataFoundException('No Weather data found', HttpStatus.NOT_FOUND);
+
+      jest.spyOn(axios, 'get').mockResolvedValueOnce({ data: { area_metadata: {}, items: [] } });
+
+      await expect(trafficWatchService.getWeatherForecasts(dateTime)).rejects.toThrowError(error);
     });
   });
 });
