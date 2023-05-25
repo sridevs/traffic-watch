@@ -12,7 +12,7 @@ describe('combineTrafficAndWeather', () => {
         camera_id: 'cam1',
         image: 'image1.jpg',
         image_metadata: { width: 1280, height: 720, md5: '12345' },
-        location: { latitude: 1.3521, longitude: 103.8198 },
+        location: { latitude: 1.3512, longitude: 103.8111 },
         timestamp: '2023-05-17T10:30:00Z',
       },
       {
@@ -49,7 +49,7 @@ describe('combineTrafficAndWeather', () => {
         camera_id: 'cam1',
         image: 'image1.jpg',
         image_metadata: { width: 1280, height: 720, md5: '12345' },
-        location: { latitude: 1.3521, longitude: 103.8198 },
+        location: { latitude: 1.3512, longitude: 103.8111 },
         locationName: 'Singapore Central',
         weatherForecast: 'Partly cloudy',
         timestamp: '2023-05-17T10:30:00Z',
@@ -75,7 +75,7 @@ describe('combineTrafficAndWeather', () => {
         camera_id: 'cam1',
         image: 'image1.jpg',
         image_metadata: { width: 1280, height: 720, md5: '12345' },
-        location: { latitude: 1.3521, longitude: 103.8198 },
+        location: { latitude: 1.3512, longitude: 103.8111 },
         locationName: 'Singapore Central',
         weatherForecast: 'Partly cloudy',
         timestamp: '2023-05-17T10:30:00Z',
@@ -83,6 +83,32 @@ describe('combineTrafficAndWeather', () => {
     ];
 
     const combinedList = combineTrafficAndWeather(trafficCameras, weatherForecasts);
+
+    expect(combinedList).toEqual(expectedList);
+  });
+
+  it('should update existing TrafficWeather object if new distance is shorter', () => {
+    const newTrafficCamera: TrafficCamera = {
+      camera_id: 'cam3',
+      image: 'image3.jpg',
+      image_metadata: { width: 1280, height: 720, md5: '54321' },
+      location: { latitude: 1.3512, longitude: 103.8113 },
+      timestamp: '2023-05-17T10:20:00Z',
+    };
+
+    const expectedList: TrafficWeather[] = [
+      {
+        camera_id: 'cam3',
+        image: 'image3.jpg',
+        image_metadata: { width: 1280, height: 720, md5: '54321' },
+        location: { latitude: 1.3512, longitude: 103.8113 },
+        locationName: 'Singapore Central',
+        weatherForecast: 'Partly cloudy',
+        timestamp: '2023-05-17T10:20:00Z',
+      },
+    ];
+
+    const combinedList = combineTrafficAndWeather([...trafficCameras, newTrafficCamera], weatherForecasts);
 
     expect(combinedList).toEqual(expectedList);
   });
@@ -103,7 +129,7 @@ describe('combineTrafficAndWeather', () => {
         camera_id: 'cam1',
         image: 'image1.jpg',
         image_metadata: { width: 1280, height: 720, md5: '12345' },
-        location: { latitude: 1.3521, longitude: 103.8198 },
+        location: { latitude: 1.3512, longitude: 103.8111 },
         locationName: 'Singapore Central',
         weatherForecast: 'Partly cloudy',
         timestamp: '2023-05-17T10:30:00Z',

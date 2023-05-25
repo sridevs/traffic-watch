@@ -26,3 +26,7 @@ export interface TrafficWeather {
   camera_id: string;
   timestamp: string;
 }
+
+export interface TrafficWeatherWithProximity extends TrafficWeather {
+  proximity: number;
+}
