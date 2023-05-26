@@ -1,4 +1,4 @@
-import { ArgumentsHost, ExceptionFilter, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 export class TrafficWatchException extends HttpException {
   constructor(message: string, statusCode: HttpStatus) {
@@ -7,6 +7,7 @@ export class TrafficWatchException extends HttpException {
 }
 
 @Injectable()
+@Catch(TrafficWatchException)
 export class TrafficWatchExceptionFilter implements ExceptionFilter {
   catch(exception: TrafficWatchException, host: ArgumentsHost) {
     const context = host.switchToHttp();

@@ -1,4 +1,4 @@
-import { ArgumentsHost, ExceptionFilter, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 export class NoDataFoundException extends HttpException {
   constructor(message: string, statusCode: HttpStatus) {
@@ -7,6 +7,7 @@ export class NoDataFoundException extends HttpException {
 }
 
 @Injectable()
+@Catch(NoDataFoundException)
 export class NoDataFoundExceptionFilter implements ExceptionFilter {
   catch(exception: NoDataFoundException, host: ArgumentsHost) {
     const context = host.switchToHttp();
